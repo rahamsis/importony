@@ -14,7 +14,6 @@ const config: Config = {
       colors : {
         primary: "#1f1f1f",
         buttonGray: "#f0f0f0",
-        top_bar: "#f48380",
         banner: "#fedbe1",
         gray: "#696969",
         lightGray: "#f7f7f7"

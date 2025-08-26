@@ -242,13 +242,13 @@ const NavbarMobile = () => {
 
 const Navbar = () => {
     return (
-        <>
+        <div className="mx-auto justify-between items-center xl:w-8/12 2xl:w-7/12 w-11/12">
             {/* Navbar para pantallas grandes */}
             <NavbarDesktop />
 
             {/* Navbar para pantallas pequeñas */}
             <NavbarMobile />
-        </>
+        </div>
     );
 };
 

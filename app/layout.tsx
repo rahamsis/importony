@@ -4,6 +4,7 @@ import "./globals.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
 import Header from "./components/header/header";
+import Footer from "./components/footer/footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,11 +28,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} mx-auto justify-between items-center xl:w-8/12 2xl:w-7/12 w-11/12`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} `}>
         <Header />
         <main>
           {children}
         </main>
+        <Footer />
       </body>
     </html>
   );
