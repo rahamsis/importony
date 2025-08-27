@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, useMemo } from "react";
 import Image from "next/image";
-import { getNewProduct } from "./utils/actions";
+import { getFeaturesProduct } from "./utils/actions";
 
 const images = [
   "/images/banner/banner1.jpg",
@@ -96,23 +96,38 @@ function PostBanner() {
   return (
     <div className="relative w-full lg:pt-6 pt-4">
       <div className="grid lg:grid-cols-2 grid-cols-1 gap-4">
-        <div>
-          <Image
-            src={"/images/postBanner/postBanner1.jpg"}
-            alt={`Post Banner 1`}
-            width={600}
-            height={400}
-            priority={true}
-          />
+        <div className="group relative overflow-hidden">
+          <div>
+            <Image
+              src={"/images/postBanner/postBanner1.jpg"}
+              alt={`Post Banner 1`}
+              width={600}
+              height={400}
+              priority={true}
+            />
+            {/* Capa izquierda */}
+            <div className="absolute top-0 left-0 group-hover:bg-white group-hover:opacity-5 h-full w-0 group-hover:w-1/2 transition-all duration-1000 ease-in-out" />
+
+            {/* Capa derecha */}
+            <div className="absolute top-0 right-0 group-hover:bg-white group-hover:opacity-5 h-full w-0 group-hover:w-1/2 transition-all duration-1000 ease-in-out" />
+          </div>
         </div>
-        <div>
-          <Image
-            src={"/images/postBanner/postBanner2.jpg"}
-            alt={`Post Banner 1`}
-            width={600}
-            height={400}
-            priority={true}
-          />
+
+        <div className="group relative overflow-hidden">
+          <div>
+            <Image
+              src={"/images/postBanner/postBanner2.jpg"}
+              alt={`Post Banner 1`}
+              width={600}
+              height={400}
+              priority={true}
+            />
+            {/* Capa izquierda */}
+            <div className="absolute top-0 left-0 group-hover:bg-white group-hover:opacity-5 h-full w-0 group-hover:w-1/2 transition-all duration-1000 ease-in-out" />
+
+            {/* Capa derecha */}
+            <div className="absolute top-0 right-0 group-hover:bg-white group-hover:opacity-5 h-full w-0 group-hover:w-1/2 transition-all duration-1000 ease-in-out" />
+          </div>
         </div>
       </div>
     </div>
@@ -127,70 +142,93 @@ interface Productos {
   precio: number;
   decripcion: string;
   imagen: string;
+  destacado: boolean;
   nuevo: boolean;
   masVendido: boolean;
   activo: boolean;
   fotos: string[];
 }
 
-
 function Products() {
 
-  const [newProduct, setNewGrados] = useState<Productos[]>([]);
+  const [featuresProduct, setFeaturesProducts] = useState<Productos[]>([]);
+  const [activeButton, setActiveButton] = useState<number>(1);
+  const [feature, setFeature] = useState<number>(1); // 1: nuevos, 2: destacados, 3: mas vendidos
 
-  // llenar los nuevos productos
+  // llenar los productos
   useEffect(() => {
     async function fetchData() {
       try {
-        const data = await getNewProduct();
-        setNewGrados(data);
+        const data = await getFeaturesProduct(feature);
+        setFeaturesProducts(data);
       } catch (error) {
-        console.error("Error obteniendo los nuevos productos:", error);
+        console.error("Error obteniendo los productos destacados o nuevos o más vendidos:", error);
       }
     }
     fetchData();
-  }, []);
+  }, [feature]);
 
   return (
     <div className="relative w-full lg:pt-12 pt-9">
       <div className="justify-center text-center mb-6">
-        <button className="bg-buttonGray text-primary font-semibold py-2 px-4 lg:mb-4 mb-2 w-full lg:w-auto">
+        <button
+          onClick={() => { setFeature(1); setActiveButton(1) }}
+          className={`font-semibold py-2 px-4 lg:mb-4 mb-2 w-full lg:w-auto hover:bg-black hover:text-white 
+          ${activeButton === 1 ? 'bg-black text-white' : 'bg-buttonGray text-primary'}`}>
           PRODUCTOS DESTACADOS
         </button>
-        <button className="bg-buttonGray text-primary font-semibold py-2 px-4 lg:mb-4 mb-2 lg:ml-4 w-full lg:w-auto">
+        <button
+          onClick={() => { setFeature(2); setActiveButton(2) }}
+          className={`font-semibold py-2 px-4 lg:mb-4 mb-2 lg:ml-4 w-full lg:w-auto hover:bg-black hover:text-white
+          ${activeButton === 2 ? 'bg-black text-white' : 'bg-buttonGray text-primary'}`}>
           PRODUCTOS NUEVOS
         </button>
-        <button className="bg-buttonGray text-primary font-semibold py-2 px-4 lg:mb-4 mb-2 lg:ml-4 w-full lg:w-auto">
+        <button
+          onClick={() => { setFeature(3); setActiveButton(3) }}
+          className={`font-semibold py-2 px-4 lg:mb-4 mb-2 lg:ml-4 w-full lg:w-auto hover:bg-black hover:text-white
+          ${activeButton === 3 ? 'bg-black text-white' : 'bg-buttonGray text-primary'}`}>
           MAS VENDIDOS
         </button>
       </div>
 
       <div className="grid lg:grid-cols-4 grid-cols-2 gap-4">
-        {newProduct.map((product, index) => (
-          <div key={index} className="group relative overflow-hidden">
+        {featuresProduct.map((product, index) => (
+          <div key={index} className="group overflow-hidden">
             <div className="border-slate-300 border">
-              <Image
-                src={product.imagen}
-                alt={product.nombre}
-                width={300}
-                height={300}
-                className="my-6"
-                priority={true}
-              />
+              <div className="relative">
+                <Image
+                  src={product.imagen}
+                  alt={product.nombre}
+                  width={300}
+                  height={300}
+                  className="my-6 object-cover"
+                  priority={true}
+                />
+                <Image
+                  src={product.fotos[0]}
+                  alt={product.nombre}
+                  width={300}
+                  height={300}
+                  priority={true}
+                  className="object-cover absolute top-0 left-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+
+                />
+              </div>
             </div>
+            
             {/* Contenedor del texto y botón */}
             <div className="text-center relative items-center justify-center mx-auto mt-2 w-full">
               <h3 className="text-base text-gray mb-2 w-full">{product.nombre}</h3>
 
               {/* Precio: desaparece con hover */}
-              <h3 className="text-lg font-semibold  transition-opacity duration-300 group-hover:opacity-0 ">
+              <h3 className="text-lg font-semibold  transition-opacity duration-300 lg:group-hover:opacity-0 ">
                 S/ {product.precio}
               </h3>
 
               {/* Botón: aparece desde abajo */}
               <button
                 className="bg-black text-white lg:text-base text-xs py-2 px-4 
-                  group-hover:opacity-100 group-hover:translate-y-0 translate-y-12 transition-all duration-500">
+                  lg:group-hover:opacity-100 lg:group-hover:translate-y-0 translate-y-12 transition-all duration-500">
                 AÑADIR AL CARRO
               </button>
             </div>
@@ -354,11 +392,11 @@ function Servicios() {
             <div className="flex flex-col grid-cols-1">
               {services.map((service, index) => (
                 <div key={index} className="px-6 py-4 flex lg:flex-row flex-col items-center text-center gap-4">
-                  <div className="text-4xl text-zinc-400 border border-slate-300 p-4">
+                  <div className="text-4xl text-zinc-300 border border-slate-300 p-4 hover:text-white hover:bg-black transition">
                     {service.icon}
                   </div>
-                  <div className="lg:text-left text-center text-zinc-600">
-                    <h3 className="font-bold text-lg">
+                  <div className="lg:text-left text-center text-zinc-800">
+                    <h3 className="font-semibold text-lg">
                       {service.title}
                     </h3>
                     <p className="text-gray">
@@ -442,13 +480,13 @@ function Marcas() {
   return (
     <div className="relative w-full pt-12">
       <div
-        className="relative w-full overflow-hidden group  p-4"
+        className="relative w-full overflow-hidden group py-8"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
         {/* Carril */}
         <div
-          className="flex items-center gap-6 transition-transform duration-700 ease-in-out"
+          className="flex items-center transition-transform duration-700 ease-in-out"
           style={trackStyle}
         >
           {marcas.map((src, idx) => (
@@ -457,7 +495,7 @@ function Marcas() {
                 <Image
                   src={src}
                   alt={`Marca ${idx + 1}`}
-                  width={150}
+                  width={140}
                   height={50}
                   className="object-contain transition duration-300 "
                   priority={idx < visible}
@@ -508,9 +546,10 @@ function Marcas() {
     </div>
   );
 }
+
 export default function Home() {
   return (
-    <div className="mx-auto justify-between items-center xl:w-8/12 2xl:w-7/12 w-11/12">
+    <div className="mx-auto justify-between items-center xl:w-8/12 2xl:w-8/12 w-11/12">
       <Banner />
 
       <PostBanner />

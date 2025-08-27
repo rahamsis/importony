@@ -58,14 +58,16 @@ const NavbarDesktop = () => {
             }`}>
             {!scrolled && (
                 <div className="h-32 my-4 text-white flex items-center justify-center">
-                    <Image
-                        src="/images/logoTony.png"
-                        alt="Landing page builder illustration"
-                        width={400}
-                        height={400}
-                        className="rounded-lg"
-                        priority // 🔥 Esto optimiza la carga de la image
-                    />
+                    <Link href="/">
+                        <Image
+                            src="/images/logoTony.png"
+                            alt="Landing page builder illustration"
+                            width={400}
+                            height={400}
+                            className="rounded-lg"
+                            priority // 🔥 Esto optimiza la carga de la image
+                        />
+                    </Link>
                 </div>
             )}
 
@@ -75,23 +77,26 @@ const NavbarDesktop = () => {
             >
                 <div className="flex">
                     <ul className="flex flex-row pl-0 list-none mt-0 ms-auto align-middle items-center">
+                        <li className="bg-blue-500 rounded-md py-1">
+                            <Link className={`text-white font-medium relative px-6 hover:opacity-50 ${pathName === '/' ? '' : ''}`} href="/">CATÁLOGOS</Link>
+                        </li>
                         <li className="">
-                            <Link className={`text-primary font-medium relative px-6 ${pathName === '/' ? '' : ''}`} href="/">GARFIOS</Link>
+                            <Link className={`text-primary font-medium relative px-6 hover:opacity-50 ${pathName === '/garfios' ? '' : ''}`} href="/garfios">GARFIOS</Link>
                         </li>
                         <li className="border-l border-slate-300">
-                            <Link className={`text-primary font-medium relative px-6  ${pathName === '/shop' ? '' : ''}`} href="/shop">AGUJAS</Link>
+                            <Link className={`text-primary font-medium relative px-6 hover:opacity-50 ${pathName === '/shop' ? '' : ''}`} href="/shop">AGUJAS</Link>
                         </li>
                         <li className="border-l border-slate-300">
-                            <Link className={`text-primary font-medium relative px-6 ${pathName === '/services' ? '' : ''}`} href="/services">PLANCHAS IND.</Link>
+                            <Link className={`text-primary font-medium relative px-6 hover:opacity-50 ${pathName === '/services' ? '' : ''}`} href="/services">PLANCHAS IND.</Link>
                         </li>
                         <li className="border-l border-slate-300">
-                            <Link className={`text-primary font-medium relative px-6 ${pathName === '/nosotros' ? '' : ''}`} href="/nosotros">PRENSATELA</Link>
+                            <Link className={`text-primary font-medium relative px-6 hover:opacity-50 ${pathName === '/nosotros' ? '' : ''}`} href="/nosotros">PRENSATELA</Link>
                         </li>
                         <li className="border-l border-slate-300">
-                            <Link className={`text-primary font-medium relative px-6 ${pathName === '/blog' ? '' : ''}`} href="/blog">ACCESORIOS</Link>
+                            <Link className={`text-primary font-medium relative px-6 hover:opacity-50 ${pathName === '/blog' ? '' : ''}`} href="/blog">ACCESORIOS</Link>
                         </li>
                         <li className="border-l border-slate-300">
-                            <Link className={`text-primary font-medium relative px-6 ${pathName === '/contact' ? '' : ''}`} href="/contact">MORE</Link>
+                            <Link className={`text-primary font-medium relative px-6 hover:opacity-50 ${pathName === '/contact' ? '' : ''}`} href="/contact">MÁS</Link>
                         </li>
                     </ul>
                 </div>
@@ -155,7 +160,8 @@ const NavbarMobile = () => {
     }, [menuOpen]);
 
     const menuItems = [
-        { href: "/", label: "GARFIOS" },
+        { href: "/catalogos", label: "CATALOGOS" },
+        { href: "/garfios", label: "GARFIOS" },
         { href: "/shop", label: "AGUJAS" },
         { href: "/services", label: "PLANCHAS IND." },
         { href: "/nosotros", label: "PRENSATELA" },
@@ -242,7 +248,7 @@ const NavbarMobile = () => {
 
 const Navbar = () => {
     return (
-        <div className="mx-auto justify-between items-center xl:w-8/12 2xl:w-7/12 w-11/12">
+        <div className="mx-auto justify-between items-center xl:w-8/12 2xl:w-8/12 w-11/12">
             {/* Navbar para pantallas grandes */}
             <NavbarDesktop />
 
