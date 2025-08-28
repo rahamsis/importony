@@ -77,7 +77,7 @@ const NavbarDesktop = () => {
                 <div className="flex">
                     <ul className="flex flex-row pl-0 list-none mt-0 ms-auto align-middle items-center">
                         <li className="bg-blue-500 rounded-md py-1">
-                            <Link className={`text-white font-medium relative px-6 hover:opacity-50 ${pathName === '/catalogos' ? '' : ''}`} href="/catalogos">CATÁLOGOS</Link>
+                            <Link className={`text-white font-medium relative px-2 hover:opacity-50 ${pathName === '/catalogos' ? '' : ''}`} href="/catalogos">CATÁLOGOS</Link>
                         </li>
                         <li className="">
                             <Link className={`text-primary font-medium relative px-6 hover:opacity-50 ${pathName === '/garfios' ? '' : ''}`} href="/garfios">GARFIOS</Link>
@@ -234,13 +234,30 @@ const NavbarMobile = () => {
                 <ul className="flex flex-col text-lg font-bold mt-8 space-y-4">
                     {menuItems.map((item) => (
                         <li key={item.href}>
-                            <Link
-                                href={item.href}
-                                className="block py-2 opacity-70 hover:opacity-100 transition-opacity duration-200"
-                                onClick={closeMenu}
-                            >
-                                {item.label}
-                            </Link>
+                            {
+                                item.label === "CATALOGOS" ? (
+                                    <div className="text-blue-600">
+                                        <Link
+                                            href={item.href}
+                                            className="block py-2 mx-4 hover:opacity-100 transition-opacity duration-200"
+                                            onClick={closeMenu}
+                                        >
+                                            {item.label}
+                                        </Link>
+                                    </div>
+                                ) : (
+                                    <div className="mx-4">
+                                        <Link
+                                            href={item.href}
+                                            className="block py-2 opacity-70 hover:opacity-100 transition-opacity duration-200"
+                                            onClick={closeMenu}
+                                        >
+                                            {item.label}
+                                        </Link>
+                                    </div>
+                                )
+                            }
+
                         </li>
                     ))}
                 </ul>
