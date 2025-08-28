@@ -16,7 +16,9 @@ const config: Config = {
         buttonGray: "#f0f0f0",
         banner: "#fedbe1",
         gray: "#696969",
-        lightGray: "#f7f7f7"
+        lightGray: "#f7f7f7",
+        chat: '#FAFAFA',
+        whatsapp: '#57c216'
       }
     },
     screens: {

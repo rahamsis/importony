@@ -40,7 +40,6 @@ function Content() {
 
     // Detectar tamaño de pantalla para 2 / 6 visibles
     useEffect(() => {
-        console.log(catalogsOrdenados)
         const check = () => setIsMobile(window.innerWidth >= 1024 ? false : true);
         check();
         window.addEventListener("resize", check);

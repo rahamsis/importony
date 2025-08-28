@@ -5,6 +5,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 
 import Header from "./components/header/header";
 import Footer from "./components/footer/footer";
+import Whatsapp from "./components/whatsapp/whatsapp";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,6 +35,7 @@ export default function RootLayout({
           {children}
         </main>
         <Footer />
+        <Whatsapp />
       </body>
     </html>
   );
