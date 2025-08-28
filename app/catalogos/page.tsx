@@ -1,10 +1,13 @@
 'use client';
 
 import { useState, useEffect, } from "react";
-import { LayoutList, LayoutGrid, Eye } from "lucide-react";
+import { LayoutList, LayoutGrid } from "lucide-react";
 import CustomSelect from "../components/selector/select";
-import Image from "next/image";
-import Link from "next/link";
+import dynamic from "next/dynamic";
+
+const PdfCard = dynamic(() => import("../components/pdfCard/pdfCard"), {
+    ssr: false,
+});
 
 function Banner() {
     return (
@@ -16,12 +19,14 @@ function Banner() {
     );
 }
 
-interface Catalog {
-    idCatalog: number;
-    nombre: string;
-    imagen: string;
-    url: string;
-}
+type Catalog = {
+    key: string;
+    name: string;
+    size?: number;
+    lastModified?: string;
+    viewUrl: string;     // ver/leer en navegador
+    downloadUrl: string; // descarga directa
+};
 
 const options = [
     { value: "default", label: "Predeterminado" },
@@ -29,14 +34,18 @@ const options = [
     { value: "nameZA", label: "Nombre: Z a A" },
 ];
 
-const catalogs = [
-    { idCatalog: 1, nombre: "Catalogo Siruba 700FS", imagen: "/images/catalogos/Siruba-700FS.jpg", url: "/catalogs/Siruba_700FS.pdf" }
-]
-
 function Content() {
+    const [catalogs, setCatalogs] = useState<Catalog[]>([]);
     const [catalogsOrdenados, setCatalogsOrdenados] = useState<Catalog[]>([]);
     const [isMobile, setIsMobile] = useState(false);
     const [order, setOrder] = useState(1);
+
+    useEffect(() => {
+        fetch(`${process.env.NEXT_PUBLIC_APP_BACK_END}/catalogos`)
+            .then((r) => r.json())
+            .then(setCatalogs)
+            .catch(console.error);
+    }, []);
 
     // Detectar tamaño de pantalla para 2 / 6 visibles
     useEffect(() => {
@@ -46,25 +55,25 @@ function Content() {
         return () => window.removeEventListener("resize", check);
     }, []);
 
-    // cargamos la data
+    // // cargamos la data
     useEffect(() => {
         setCatalogsOrdenados(catalogs);
-    }, []);
+    }, [catalogs]);
 
     // Ordena los productos según el orden seleccionado
     const handleSelectChange = (value: string) => {
         const catalogsOrdenados = [...catalogs]; // clonamos el array para no mutar el original
-
+        console.log(catalogs)
         switch (value) {
             case "nameAZ":
-                catalogsOrdenados.sort((a, b) => a.nombre.localeCompare(b.nombre));
+                catalogsOrdenados.sort((a, b) => a.name.localeCompare(b.name));
                 break;
             case "nameZA":
-                catalogsOrdenados.sort((a, b) => b.nombre.localeCompare(a.nombre));
+                catalogsOrdenados.sort((a, b) => b.name.localeCompare(a.name));
                 break;
             case "default":
             default:
-                catalogsOrdenados.sort((a, b) => a.idCatalog - b.idCatalog);
+                catalogsOrdenados.sort((a, b) => a.key.localeCompare(b.key));
                 break;
         }
 
@@ -100,34 +109,19 @@ function Content() {
                         <CustomSelect options={options} defaultValue="default" onChange={handleSelectChange} />
                     </div>
                 </div>
-                {/* <div className="lg:hidden">
-                    <button className="py-2 px-3 bg-buttonGray" onClick={() => setFilterVisible(true)}>
-                        FILTRAR
-                    </button>
-                </div> */}
             </div>
 
             <div className="w-full">
                 <div className={`grid gap-4 ${order === 2 && !isMobile ? "grid-cols-1" : "lg:grid-cols-3 grid-cols-2"}`}>
-                    {catalogsOrdenados.map((catalogo) => (
-                        <div key={catalogo.idCatalog} className={`group ${order === 2 && !isMobile && "lg:flex"} `}>
-                            <div className="border-slate-300 border cursor-pointer hover:opacity-70" onClick={() => openPDF(catalogo.url)}>
-                                <Image
-                                    src={catalogo.imagen}
-                                    alt={catalogo.nombre}
-                                    width={300}
-                                    height={300}
-                                    className="my-6 object-cover"
-                                    priority={true}
-                                />
-                            </div>
-                            <div className={`${order === 2 && !isMobile ? "text-start" : "text-center"} ml-6 relative items-start justify-center mx-auto mt-2 w-full`}>
-                                <h3 className="text-base text-gray mb-2 w-full">{catalogo.nombre}</h3>
+                    {catalogsOrdenados.map((catalogo, i) => (
+                        <div key={i} className={`group ${order === 2 && !isMobile && "lg:flex"} `}>
+                            <PdfCard url={catalogo.viewUrl} name={catalogo.name} />
+                            {/* <div className={`${order === 2 && !isMobile ? "text-start" : "text-center"} ml-6 relative items-start justify-center mx-auto mt-2 w-full`}>
                                 {(order === 2 && !isMobile) &&
-                                <button className="bg-buttonGray space-x-2 hover:bg-black hover:text-white flex flex-row justify-center py-2 w-40" onClick={() => openPDF(catalogo.url)}>
-                                    <Eye/><span>Abrir PDF </span>
-                                </button>}
-                            </div>
+                                    <button className="bg-buttonGray space-x-2 hover:bg-black hover:text-white flex flex-row justify-center py-2 w-40" onClick={() => openPDF(catalogo.viewUrl)}>
+                                        <Eye /><span>Abrir PDF </span>
+                                    </button>}
+                            </div> */}
                         </div>
                     ))}
                 </div>
