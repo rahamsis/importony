@@ -29,7 +29,7 @@ export async function getFeaturesProduct(feature: number) {
             nuevo: row.nuevo,
             masVendido: row.masVendido,
             activo: row.activo,
-            fotos: row.fotosAdicionales.split(',')
+            fotos: row.fotosAdicionales?.split(',') ?? []
         }));
     } catch (error) {
         console.error('Error al obtener los productos destacados o nuevos o más vendidos:', error);
@@ -64,7 +64,7 @@ export async function getProductByCategory(category: string) {
             nuevo: row.nuevo,
             masVendido: row.masVendido,
             activo: row.activo,
-            fotos: row.fotosAdicionales.split(',')
+            fotos: row.fotosAdicionales?.split(',') ?? []
         }));
     } catch (error) {
         console.error('Error al obtener los productos por categoria:', error);

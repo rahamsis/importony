@@ -4,35 +4,34 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
-import styles from './header.module.css'
 
-const active = {
-    fontWeight: '500',
-    color: 'rgb(255, 255, 255, 0.01)',
-    position: 'relative',
-    paddingLeft: '8px',
-    paddingRight: '8px',
-    borderBottom: '4px solid #32a1ce'
-}
+// const active = {
+//     fontWeight: '500',
+//     color: 'rgb(255, 255, 255, 0.01)',
+//     position: 'relative',
+//     paddingLeft: '8px',
+//     paddingRight: '8px',
+//     borderBottom: '4px solid #32a1ce'
+// }
 
-const disactive = {
-    default: {
-        fontWeight: '500',
-        color: 'rgb(255, 255, 255, 0.01)',
-        position: 'relative',
-        paddingLeft: '8px',
-        paddingRight: '8px',
-        opacity: 0.50,
-    },
-    Hovered: {
-        fontWeight: '500',
-        color: 'rgb(255, 255, 255, 0.01)',
-        position: 'relative',
-        paddingLeft: '8px',
-        paddingRight: '8px',
-    }
+// const disactive = {
+//     default: {
+//         fontWeight: '500',
+//         color: 'rgb(255, 255, 255, 0.01)',
+//         position: 'relative',
+//         paddingLeft: '8px',
+//         paddingRight: '8px',
+//         opacity: 0.50,
+//     },
+//     Hovered: {
+//         fontWeight: '500',
+//         color: 'rgb(255, 255, 255, 0.01)',
+//         position: 'relative',
+//         paddingLeft: '8px',
+//         paddingRight: '8px',
+//     }
 
-}
+// }
 
 const NavbarDesktop = () => {
 
@@ -57,7 +56,7 @@ const NavbarDesktop = () => {
         <nav className={`hidden lg:flex lg:flex-col py-3 items-center top-0 left-0 w-full z-50 transition-all duration-500 ${scrolled ? "fixed bg-white shadow-md py-2" : "relative"
             }`}>
             {!scrolled && (
-                <div className="h-32 my-4 text-white flex items-center justify-center">
+                <div className="h-28 w-96 my-4 text-white flex items-center justify-center">
                     <Link href="/">
                         <Image
                             src="/images/logoTony.png"
@@ -78,25 +77,28 @@ const NavbarDesktop = () => {
                 <div className="flex">
                     <ul className="flex flex-row pl-0 list-none mt-0 ms-auto align-middle items-center">
                         <li className="bg-blue-500 rounded-md py-1">
-                            <Link className={`text-white font-medium relative px-6 hover:opacity-50 ${pathName === '/' ? '' : ''}`} href="/">CATÁLOGOS</Link>
+                            <Link className={`text-white font-medium relative px-6 hover:opacity-50 ${pathName === '/catalogos' ? '' : ''}`} href="/catalogos">CATÁLOGOS</Link>
                         </li>
                         <li className="">
                             <Link className={`text-primary font-medium relative px-6 hover:opacity-50 ${pathName === '/garfios' ? '' : ''}`} href="/garfios">GARFIOS</Link>
                         </li>
                         <li className="border-l border-slate-300">
-                            <Link className={`text-primary font-medium relative px-6 hover:opacity-50 ${pathName === '/shop' ? '' : ''}`} href="/shop">AGUJAS</Link>
+                            <Link className={`text-primary font-medium relative px-6 hover:opacity-50 ${pathName === '/agujas' ? '' : ''}`} href="/agujas">AGUJAS</Link>
                         </li>
                         <li className="border-l border-slate-300">
-                            <Link className={`text-primary font-medium relative px-6 hover:opacity-50 ${pathName === '/services' ? '' : ''}`} href="/services">PLANCHAS IND.</Link>
+                            <Link className={`text-primary font-medium relative px-6 hover:opacity-50 ${pathName === '/planchuelas' ? '' : ''}`} href="/planchuelas">PLANCHUELAS</Link>
+                        </li>
+                        <li className="border-l border-slate-300 flex text-center">
+                            <Link className={`text-primary font-medium relative px-6 hover:opacity-50 ${pathName === '/planchas-industriales' ? '' : ''}`} href="/planchas-industriales">PLANCHAS IND.</Link>
                         </li>
                         <li className="border-l border-slate-300">
-                            <Link className={`text-primary font-medium relative px-6 hover:opacity-50 ${pathName === '/nosotros' ? '' : ''}`} href="/nosotros">PRENSATELA</Link>
+                            <Link className={`text-primary font-medium relative px-6 hover:opacity-50 ${pathName === '/prensatelas' ? '' : ''}`} href="/prensatelas">PRENSATELA</Link>
                         </li>
                         <li className="border-l border-slate-300">
-                            <Link className={`text-primary font-medium relative px-6 hover:opacity-50 ${pathName === '/blog' ? '' : ''}`} href="/blog">ACCESORIOS</Link>
+                            <Link className={`text-primary font-medium relative px-6 hover:opacity-50 ${pathName === '/accesorios' ? '' : ''}`} href="/accesorios">ACCESORIOS</Link>
                         </li>
                         <li className="border-l border-slate-300">
-                            <Link className={`text-primary font-medium relative px-6 hover:opacity-50 ${pathName === '/contact' ? '' : ''}`} href="/contact">MÁS</Link>
+                            <Link className={`text-primary font-medium relative px-6 hover:opacity-50 ${pathName === '/' ? '' : ''}`} href="/">MÁS</Link>
                         </li>
                     </ul>
                 </div>
@@ -162,11 +164,12 @@ const NavbarMobile = () => {
     const menuItems = [
         { href: "/catalogos", label: "CATALOGOS" },
         { href: "/garfios", label: "GARFIOS" },
-        { href: "/shop", label: "AGUJAS" },
-        { href: "/services", label: "PLANCHAS IND." },
-        { href: "/nosotros", label: "PRENSATELA" },
-        { href: "/blog", label: "ACCESORIOS" },
-        { href: "/contact", label: "MORE" }
+        { href: "/agujas", label: "AGUJAS" },
+        { href: "/planchuelas", label: "PLANCHUELAS" },
+        { href: "/planchas-industriales", label: "PLANCHAS IND." },
+        { href: "/prensatelas", label: "PRENSATELA" },
+        { href: "/accesorios", label: "ACCESORIOS" },
+        { href: "/", label: "MORE" }
     ];
 
     return (

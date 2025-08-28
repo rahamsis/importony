@@ -4,14 +4,14 @@ import { useState, useEffect, } from "react";
 import Sidebar from "../components/sidebar/sidebar";
 import { getProductByCategory } from "@/app/utils/actions";
 import Dropdown from "../components/dropDown/dropDown";
-import { ModalDetailProduct } from "../components/modal/detailProducts";
 import Product from "../components/product/product"
+
 
 function Banner() {
     return (
         <div className="relative w-full lg:h-full overflow-hidden pt-3 lg:pt-6">
             <div className="bg-buttonGray w-full text-center lg:py-16 py-8 text-zinc-800 text-2xl font-semibold">
-                <h3>GARFIOS</h3>
+                <h3>PRENSATELAS</h3>
             </div>
         </div>
     );
@@ -34,39 +34,19 @@ interface Productos {
     fotos: string[];
 }
 
-const options = [
-    { value: "default", label: "Predeterminado" },
-    { value: "priceLowHigh", label: "Precio: bajo a alto" },
-    { value: "priceHighLow", label: "Precio: alto a bajo" },
-    { value: "nameAZ", label: "Nombre: A a Z" },
-    { value: "nameZA", label: "Nombre: Z a A" },
-];
-
 function Content() {
-    const [isMobile, setIsMobile] = useState(false);
 
     const [products, setProducts] = useState<Productos[]>([]);
     const [productsFiltered, setProductsFiltered] = useState<Productos[]>([]);
     const [selectedFilters, setSelectedFilters] = useState<Record<string, string[]>>({});
 
-    const [order, setOrder] = useState(1);
     const [filterVisible, setFilterVisible] = useState(false);
-
-    const [showDetailProduct, setShowDetailProduct] = useState<Productos | null>(null)
-
-    // Detectar tamaño de pantalla para 2 / 6 visibles
-    useEffect(() => {
-        const check = () => setIsMobile(window.innerWidth >= 1024 ? false : true);
-        check();
-        window.addEventListener("resize", check);
-        return () => window.removeEventListener("resize", check);
-    }, []);
 
     // cargamos la data desde la base de datos
     useEffect(() => {
         async function fetchData() {
             try {
-                const data = await getProductByCategory("GARFIOS");
+                const data = await getProductByCategory("PRENSATELAS");
                 setProducts(data);
                 setProductsFiltered(data);
             } catch (error) {
@@ -75,32 +55,6 @@ function Content() {
         }
         fetchData();
     }, []);
-
-    // Ordena los productos según el orden seleccionado
-    const handleSelectChange = (value: string) => {
-        const productosOrdenados = [...products]; // clonamos el array para no mutar el original
-
-        switch (value) {
-            case "priceLowHigh":
-                productosOrdenados.sort((a, b) => a.precio - b.precio);
-                break;
-            case "priceHighLow":
-                productosOrdenados.sort((a, b) => b.precio - a.precio);
-                break;
-            case "nameAZ":
-                productosOrdenados.sort((a, b) => a.nombre.localeCompare(b.nombre));
-                break;
-            case "nameZA":
-                productosOrdenados.sort((a, b) => b.nombre.localeCompare(a.nombre));
-                break;
-            case "default":
-            default:
-                productosOrdenados.sort((a, b) => a.idProducto - b.idProducto);
-                break;
-        }
-
-        setProductsFiltered(productosOrdenados);
-    };
 
     // Se llama cada vez que el Sidebar cambia filtros
     const handleFiltersChange = (filters: Record<string, string[]>) => {
@@ -151,15 +105,12 @@ function Content() {
                 </div>
             </div>
 
-            {/* Modal de detalle del producto */}
-            {showDetailProduct && (
-                <ModalDetailProduct producto={showDetailProduct} onClose={() => setShowDetailProduct(null)} />
-            )}
+
         </div>
     );
 }
 
-export default function Garfios() {
+export default function Prensatelas() {
     return (
         <div className="mx-auto justify-between items-center xl:w-8/12 2xl:w-8/12 w-11/12 mb-8">
 

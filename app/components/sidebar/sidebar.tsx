@@ -59,6 +59,7 @@ const Sidebar = ({ products, filteredProducts, selectedFilters, onFiltersChange 
         const baseData = selectedFilters[attr]?.length > 0 ? products : filteredProducts;
         const counts = baseData.reduce((acc: Record<string, number>, p) => {
             const key = (p as any)[attr];
+            if (!key || key === "null" || key === "") return acc; 
             acc[key] = (acc[key] || 0) + 1;
             return acc;
         }, {});
@@ -83,10 +84,15 @@ const Sidebar = ({ products, filteredProducts, selectedFilters, onFiltersChange 
     }, [products]);
 
     return (
-        <div className="w-full  mb-10">
+        <div className=" mb-10">
             <div className="py-4 border-b border-zinc-300">
                 <h3 className="font-medium capitalize mb-3">FILTRAR POR</h3>
-                {atributos.map(attr => (
+                {atributos.map(attr => {
+                    const options = getOptions(attr);
+
+                if (options.length === 0) return null;
+
+                return (
                     (attr != "null" && attr != null && attr != "") &&
                     <div key={attr} className="mb-4">
                         <h3 className="font-medium capitalize mb-1">{attr}</h3>
@@ -106,7 +112,7 @@ const Sidebar = ({ products, filteredProducts, selectedFilters, onFiltersChange 
                             </div>
                         ))}
                     </div>
-                ))}
+                )})}
             </div>
 
             <div className="py-4 border-b border-zinc-300">

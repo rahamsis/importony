@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 import Image from "next/image";
 import { getFeaturesProduct } from "./utils/actions";
+import { ModalDetailProduct } from "./components/modal/detailProducts";
 
 const images = [
   "/images/banner/banner1.jpg",
@@ -135,11 +136,13 @@ function PostBanner() {
 }
 
 interface Productos {
-  idProducto: string;
+  idProducto: number;
   categoria: string;
+  subCategoria: string;
   marca: string;
   nombre: string;
   precio: number;
+  color: string;
   decripcion: string;
   imagen: string;
   destacado: boolean;
@@ -154,6 +157,8 @@ function Products() {
   const [featuresProduct, setFeaturesProducts] = useState<Productos[]>([]);
   const [activeButton, setActiveButton] = useState<number>(1);
   const [feature, setFeature] = useState<number>(1); // 1: nuevos, 2: destacados, 3: mas vendidos
+
+  const [showDetailProduct, setShowDetailProduct] = useState<Productos | null>(null)
 
   // llenar los productos
   useEffect(() => {
@@ -204,18 +209,20 @@ function Products() {
                   className="my-6 object-cover"
                   priority={true}
                 />
-                <Image
-                  src={product.fotos[0]}
-                  alt={product.nombre}
-                  width={300}
-                  height={300}
-                  priority={true}
-                  className="object-cover absolute top-0 left-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                {product.fotos?.[0] &&
+                  <Image
+                    src={product.fotos[0]}
+                    alt={product.nombre}
+                    width={300}
+                    height={300}
+                    priority={true}
+                    className="object-cover absolute top-0 left-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
 
-                />
+                  />
+                }
               </div>
             </div>
-            
+
             {/* Contenedor del texto y botón */}
             <div className="text-center relative items-center justify-center mx-auto mt-2 w-full">
               <h3 className="text-base text-gray mb-2 w-full">{product.nombre}</h3>
@@ -227,9 +234,10 @@ function Products() {
 
               {/* Botón: aparece desde abajo */}
               <button
+                onClick={() => setShowDetailProduct(product)}
                 className="bg-black text-white lg:text-base text-xs py-2 px-4 
                   lg:group-hover:opacity-100 lg:group-hover:translate-y-0 translate-y-12 transition-all duration-500">
-                AÑADIR AL CARRO
+                VER DETALLE
               </button>
             </div>
           </div>
@@ -243,6 +251,11 @@ function Products() {
           </button>
         </div>
       </div>
+
+      {/* Modal de detalle del producto */}
+      {showDetailProduct && (
+        <ModalDetailProduct producto={showDetailProduct} onClose={() => setShowDetailProduct(null)} />
+      )}
     </div>
   );
 }
@@ -491,13 +504,14 @@ function Marcas() {
         >
           {marcas.map((src, idx) => (
             <div key={idx} style={itemStyle} className="shrink-0">
-              <div className="mx-auto flex h-20 w-full items-center justify-center">
+              <div className="mx-auto flex h-14 w-32 items-center justify-center">
                 <Image
                   src={src}
                   alt={`Marca ${idx + 1}`}
                   width={140}
                   height={50}
-                  className="object-contain transition duration-300 "
+                  style={{ height: "auto", width: "auto" }}
+                  className="object-contain h-auto transition duration-300 "
                   priority={idx < visible}
                 />
               </div>

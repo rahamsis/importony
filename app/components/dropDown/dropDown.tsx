@@ -66,6 +66,7 @@ const Dropdown = ({ isVisible, products, filteredProducts, selectedFilters, onFi
         const baseData = selectedFilters[attr]?.length > 0 ? products : filteredProducts;
         const counts = baseData.reduce((acc: Record<string, number>, p) => {
             const key = (p as any)[attr];
+            if (!key || key === "null" || key === "") return acc;
             acc[key] = (acc[key] || 0) + 1;
             return acc;
         }, {});
@@ -138,7 +139,7 @@ const Dropdown = ({ isVisible, products, filteredProducts, selectedFilters, onFi
     }, [products]);
 
     return (
-        <div className="relative lg:w-52 w-full h-screen" ref={dropdownRef}>
+        <div className="relative lg:w-52 w-full min-h-screen" ref={dropdownRef}>
             <div className={`flex flex-row border-2 gap-4 justify-center border-zinc-300 text-center p-3 cursor-pointer`}>
                 {hasActiveFilters &&
                     <div className="flex gap-1 bg-buttonGray py-2 px-5" onClick={() => clearFilters()}>
@@ -152,42 +153,48 @@ const Dropdown = ({ isVisible, products, filteredProducts, selectedFilters, onFi
                 </div>
             </div>
 
-            {atributos.map(attr => (
-                (attr != "null" && attr != null && attr != "") &&
-                <div key={attr} className="border-collapse border border-zinc-300">
-                    <div className="flex justify-between items-center cursor-pointer" onClick={() => toggleGroup(attr)}>
-                        <button className="w-full px-4 py-2 font-semibold bg-white text-left hover:border-gray-400 ">
-                            {attr}
-                        </button>
-                        <div className="px-4">
-                            {attributeOpenGroups[attr] ? <ChevronUp className="text-black" /> : <ChevronDown className="text-black" />}
+            {atributos.map(attr => {
+                const options = getOptions(attr);
+
+                if (options.length === 0) return null;
+
+                return (
+                    (getOptions(attr).length > 0) &&
+                    <div key={attr} className="border-collapse border border-zinc-300">
+                        <div className="flex justify-between items-center cursor-pointer" onClick={() => toggleGroup(attr)}>
+                            <button className="w-full px-4 py-2 font-semibold bg-white text-left hover:border-gray-400 ">
+                                {attr}
+                            </button>
+                            <div className="px-4">
+                                {attributeOpenGroups[attr] ? <ChevronUp className="text-black" /> : <ChevronDown className="text-black" />}
+                            </div>
                         </div>
+
+
+                        <div className={`mt-1 px-4 bg-white overflow-hidden transition-max-height duration-700 ease-in-out ${attributeOpenGroups[attr] ? "max-h-60" : "max-h-0"
+                            }`}>
+                            {getOptions(attr).map(option => (
+                                (option.value != "null" && option.value != null && option.value !== "") &&
+                                <label key={option.value} className="flex items-center justify-between cursor-pointer border-t border-zinc-300 py-2">
+                                    <div className="space-x-2 text-zinc-600">
+                                        <input
+                                            type="checkbox"
+                                            className="accent-black"
+                                            checked={selectedFilters[attr]?.includes(option.value) || false}
+                                            onChange={() => handleFilterChange(attr, option.value)}
+
+                                        />
+                                        <span>{option.value}</span>
+                                    </div>
+
+                                    <div className="text-zinc-600">({option.count})</div>
+                                </label>
+                            ))}
+                        </div>
+
                     </div>
-
-
-                    <div className={`mt-1 px-4 bg-white overflow-hidden transition-max-height duration-700 ease-in-out ${attributeOpenGroups[attr] ? "max-h-60" : "max-h-0"
-                        }`}>
-                        {getOptions(attr).map(option => (
-                            (option.value != "null" && option.value != null && option.value !== "") &&
-                            <label key={option.value} className="flex items-center justify-between cursor-pointer border-t border-zinc-300 py-2">
-                                <div className="space-x-2 text-zinc-600">
-                                    <input
-                                        type="checkbox"
-                                        className="accent-black"
-                                        checked={selectedFilters[attr]?.includes(option.value) || false}
-                                        onChange={() => handleFilterChange(attr, option.value)}
-
-                                    />
-                                    <span>{option.value}</span>
-                                </div>
-
-                                <div className="text-zinc-600">({option.count})</div>
-                            </label>
-                        ))}
-                    </div>
-
-                </div>
-            ))}
+                )
+            })}
 
             <div className="border border-zinc-300 my-3">
                 <div className="flex justify-between items-center cursor-pointer" onClick={() => setSpecialProductsOpen(!specialProductsOpen)}>
