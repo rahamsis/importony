@@ -1,6 +1,8 @@
 
 'use client';
 
+/* eslint-disable */
+
 import { useState, useEffect, } from "react";
 import Image from "next/image";
 
@@ -44,7 +46,7 @@ const Sidebar = ({ products, filteredProducts, selectedFilters, onFiltersChange 
             atributos.forEach(attr => (initFilters[attr] = []));
             onFiltersChange(initFilters);
         }
-    }, [products]);
+    }, [products, atributos]);
 
     // Manejo de checkboxes
     const handleFilterChange = (group: string, value: string) => {

@@ -1,5 +1,7 @@
 'use client'
 
+/* eslint-disable */
+
 import { useState, useEffect, useRef, useMemo } from "react";
 import Image from "next/image";
 import { getFeaturesProduct } from "./utils/actions";

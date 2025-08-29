@@ -51,7 +51,7 @@ const Dropdown = ({ isVisible, products, filteredProducts, selectedFilters, onFi
             atributos.forEach(attr => (initFilters[attr] = []));
             onFiltersChange(initFilters);
         }
-    }, [products]);
+    }, [products, atributos]);
 
     // Manejo de checkboxes
     const handleFilterChange = (group: string, value: string) => {

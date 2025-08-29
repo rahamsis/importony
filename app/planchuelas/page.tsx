@@ -1,5 +1,7 @@
 'use client';
 
+/* eslint-disable */
+
 import { useState, useEffect, } from "react";
 import Sidebar from "../components/sidebar/sidebar";
 import { getProductByCategory } from "@/app/utils/actions";

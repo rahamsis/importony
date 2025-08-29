@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo, use } from "react";
+import { useState, useEffect,} from "react";
 import { X } from "lucide-react";
 import Image from "next/image";
 

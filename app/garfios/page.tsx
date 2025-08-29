@@ -34,33 +34,13 @@ interface Productos {
     fotos: string[];
 }
 
-const options = [
-    { value: "default", label: "Predeterminado" },
-    { value: "priceLowHigh", label: "Precio: bajo a alto" },
-    { value: "priceHighLow", label: "Precio: alto a bajo" },
-    { value: "nameAZ", label: "Nombre: A a Z" },
-    { value: "nameZA", label: "Nombre: Z a A" },
-];
-
 function Content() {
-    const [isMobile, setIsMobile] = useState(false);
-
     const [products, setProducts] = useState<Productos[]>([]);
     const [productsFiltered, setProductsFiltered] = useState<Productos[]>([]);
     const [selectedFilters, setSelectedFilters] = useState<Record<string, string[]>>({});
 
-    const [order, setOrder] = useState(1);
     const [filterVisible, setFilterVisible] = useState(false);
-
     const [showDetailProduct, setShowDetailProduct] = useState<Productos | null>(null)
-
-    // Detectar tamaño de pantalla para 2 / 6 visibles
-    useEffect(() => {
-        const check = () => setIsMobile(window.innerWidth >= 1024 ? false : true);
-        check();
-        window.addEventListener("resize", check);
-        return () => window.removeEventListener("resize", check);
-    }, []);
 
     // cargamos la data desde la base de datos
     useEffect(() => {
@@ -75,32 +55,6 @@ function Content() {
         }
         fetchData();
     }, []);
-
-    // Ordena los productos según el orden seleccionado
-    const handleSelectChange = (value: string) => {
-        const productosOrdenados = [...products]; // clonamos el array para no mutar el original
-
-        switch (value) {
-            case "priceLowHigh":
-                productosOrdenados.sort((a, b) => a.precio - b.precio);
-                break;
-            case "priceHighLow":
-                productosOrdenados.sort((a, b) => b.precio - a.precio);
-                break;
-            case "nameAZ":
-                productosOrdenados.sort((a, b) => a.nombre.localeCompare(b.nombre));
-                break;
-            case "nameZA":
-                productosOrdenados.sort((a, b) => b.nombre.localeCompare(a.nombre));
-                break;
-            case "default":
-            default:
-                productosOrdenados.sort((a, b) => a.idProducto - b.idProducto);
-                break;
-        }
-
-        setProductsFiltered(productosOrdenados);
-    };
 
     // Se llama cada vez que el Sidebar cambia filtros
     const handleFiltersChange = (filters: Record<string, string[]>) => {

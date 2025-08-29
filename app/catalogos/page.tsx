@@ -80,10 +80,6 @@ function Content() {
         setCatalogsOrdenados(catalogsOrdenados);
     };
 
-    const openPDF = (url: string) => {
-        window.open(url, "_blank");
-    };
-
     return (
         <div className="lg:flex flex-col w-full lg:pt-6 pt-4 gap-6">
             <div className="flex justify-between w-full mb-6">
