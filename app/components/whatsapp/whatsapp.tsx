@@ -4,8 +4,8 @@ import { useState } from "react";
 import styles from './WhatsappButton.module.css';
 
 // var message = "Hola%2c%20estoy%20interesado%20en%20los%20productos%20que%20vende%2e"
-let numero = "51955171495"
-let url = "https://api.whatsapp.com/send?phone=" + numero + "&text="
+const numero = "51955171495"
+const url = "https://api.whatsapp.com/send?phone=" + numero + "&text="
 
 
 export default function Whatsapp() {
