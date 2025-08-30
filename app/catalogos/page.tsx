@@ -41,7 +41,7 @@ function Content() {
     const [order, setOrder] = useState(1);
 
     useEffect(() => {
-        fetch(`${process.env.NEXT_PUBLIC_APP_BACK_END}/catalogos`)
+        fetch(`${process.env.NEXT_PUBLIC_APP_BACK_END}/backendApi/catalogos`)
             .then((r) => r.json())
             .then(setCatalogs)
             .catch(console.error);
