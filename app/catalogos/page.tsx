@@ -43,7 +43,7 @@ function Content() {
     useEffect(() => {
         const fetchCatalogs = async () => {
             try {
-                const response = await fetch(`${process.env.NEXT_PUBLIC_APP_BACK_END}/catalogos/all-catalogos`, {
+                const response = await fetch(`${process.env.APP_BACK_END}/catalogos/all-catalogos`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
