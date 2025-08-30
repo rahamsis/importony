@@ -4,6 +4,7 @@ import { useState, useEffect, } from "react";
 import { LayoutList, LayoutGrid } from "lucide-react";
 import CustomSelect from "../components/selector/select";
 import dynamic from "next/dynamic";
+import { getCatalogs } from "../utils/actions";
 
 const PdfCard = dynamic(() => import("../components/pdfCard/pdfCard"), {
     ssr: false,
@@ -43,16 +44,8 @@ function Content() {
     useEffect(() => {
         const fetchCatalogs = async () => {
             try {
-                const response = await fetch(`${process.env.APP_BACK_END}/catalogos/all-catalogos`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'accept': '/'
-                    },
-                    next: { revalidate: 0 }
-                });
-                const data = await response.json();
-                setCatalogs(data);
+                const response = await getCatalogs()
+                setCatalogs(response);
             } catch (error) {
                 console.error(error);
             }

@@ -71,3 +71,23 @@ export async function getProductByCategory(category: string) {
         throw new Error("Error al obtener los productos por categoria");
     }
 }
+
+export async function getCatalogs() {
+    try {
+        const response = await fetch(`${process.env.APP_BACK_END}/catalogos/all-catalogos`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'accept': '/'
+            },
+            next: { revalidate: 0 }
+        });
+
+        const data = await response.json();
+
+        return data;
+    } catch (error) {
+        console.error('Error al obtener los catalogos:', error);
+        throw new Error("Error al obtener los catalogos");
+    }
+}
