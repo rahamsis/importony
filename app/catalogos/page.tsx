@@ -41,10 +41,24 @@ function Content() {
     const [order, setOrder] = useState(1);
 
     useEffect(() => {
-        fetch(`${process.env.NEXT_PUBLIC_APP_BACK_END}/backendApi/catalogos`)
-            .then((r) => r.json())
-            .then(setCatalogs)
-            .catch(console.error);
+        const fetchCatalogs = async () => {
+            try {
+                const response = await fetch(`${process.env.NEXT_PUBLIC_APP_BACK_END}/catalogos`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'accept': '/'
+                    },
+                    next: { revalidate: 0 }
+                });
+                const data = await response.json();
+                setCatalogs(data);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        fetchCatalogs();
     }, []);
 
     // Detectar tamaño de pantalla para 2 / 6 visibles
